@@ -1,0 +1,152 @@
+<?php  // echo '<pre>'.print_r( $config ,1 ); die; ?>
+<?php $rand = time().rand().rand();
+	//  echo '<pre>'.print_r( $items,1 ); die;?>
+<?php 
+$jmimage =  Mage::helper('joomlart_jmslideshow/jmimage')->setConfig( $config['thumbnailMode'], $config['useRatio'] );
+?>
+<?php if($items){?>
+	<?php if(!defined('JM_ADD_JQUERY')){?>
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('joomlart/jmslideshow/js/jquery.js') ?>"></script>
+	<?php  define('JM_ADD_JQUERY', true); ?>
+	<?php }?>
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('joomlart/jmslideshow/js/jm.slideshow.js') ?>"></script>
+	<?php if(!defined('JM_ADD_SKIN_SILDESHOWS')){?>
+		
+	<?php  define('JM_ADD_SKIN_SILDESHOWS', true); ?>
+	<?php }?>		
+	<?php
+	  /*Convert to array*/
+	  $config['thumbSpace'] = preg_split ('/:/', $config['thumbSpace']);
+	?>
+	<script type="text/javascript">
+		jQuery.noConflict();
+	     jQuery(document).ready(function($){	     
+	     	$('#jm-slide-<?php echo $rand;?>').Slideshow2({
+			        source:'<?php echo $config['source'];?>',
+					navPos:'<?php echo $config['navigationAlignment'];?>',
+	                startItem: <?php echo ($config['startItem'] - 1); ?>,
+	                showItem: <?php echo $config['showItem']; ?>,
+	                itemWidth: <?php echo (int)$config['thumbWidth']+ ((int)$config['thumbSpace'][0] * 2); ?>,
+	                itemHeight: <?php echo (int)$config['thumbHeight']+((int)$config['thumbSpace'][1] * 2); ?>,
+	                navItemWidth:<?php echo (int)$config['navItemWidth']?>,
+	                navItemHeight:<?php echo (int)$config['navItemHeight']?>,        
+	                mainWidth: <?php echo (int)$config['mainWidth']; ?>,
+	                mainHeight: <?php echo (int)$config['mainHeight']; ?>,
+	                duration: <?php echo (int)$config['duration']; ?>,	               
+	                animation: '<?php echo $config['animation']; ?>',
+	                thumbOpacity:<?php echo $config['thumbOpacity']; ?>,			
+	                maskOpacity: '<?php echo $config['descOpacity']; ?>',
+			descOpacity :<?php echo $config['descOpacity']; ?>,
+			overlapOpacity :<?php echo $config['overlapOpacity']; ?>,
+	                buttonOpacity: '<?php echo $config['overlapOpacity']; ?>',
+	                showDesc: '<?php echo $config['showdesc']; ?>',
+	                descMode: '<?php echo $config['showdescwhen']; ?>',
+	                readmoretext: '<?php echo $config['readmoretext']; ?>',
+	                navigation:'<?php echo $config['navigation']; ?>',
+	                urls:[],
+			thumbSpaces: [<?php echo intval($config['thumbSpace'][0]) ?> ,<?php echo intval($config['thumbSpace'][1])?>],
+			autoPlay: <?php echo $config['autoplay']; ?>,
+			but_prev: '.jm-slide-prev',
+			but_next: '.jm-slide-next',
+			but_play: '.jm-slide-play',
+			but_stop: '.jm-slide-stop',
+			but_playback: '.jm-slide-playback',
+			interval: <?php echo $config['interval']; ?>
+	        });
+	     });
+	</script>	
+<?php }?>
+<?php if($config['title']){?><div class="head"><h4><?php echo $config['title']; ?></h4></div><?php } ?>
+<div class="jm-slidewrap <?php echo 'jm_wrap'.$config['navigationAlignment'];?>" id="jm-slide-<?php echo $rand;?>" style="visibility:hidden;">
+  <div class="jm-slide-main-wrap<?php echo ($config['navigationAlignment'] == 'vertical_left' ? ' jm-slide-right' : '' )?>">
+    <div class="jm-slide-main">
+		
+     <?php $i=1; foreach( $items as $k => $_product ) :  // echo $_product->getImage(); die;?>
+     	      <div class="jm-slide-item">
+			 <img align="left" src="<?php echo  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).$jmimage->resizeThumb( 'media/catalog/product'.$_product->getImage(), $config['mainWidth'], $config['mainHeight'] );?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>"/>
+	        <?php if ($config['showdesc'] == 'always' ):?>
+			  <div class="jm-slide-desc">
+			  <h3><a  href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+				<?php echo $this->htmlEscape($_product->getName()) ;?></a>
+				
+			 </h3>
+			  <?php echo nl2br($_product->getDescription()) ?>
+			  <?php if ($config['showdesc']=='desc-readmore'){?>
+				<a class="readmore" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+					<span><?php echo $config['readmoretext'];?></span>
+				</a>
+			<?php }?>
+			</div>
+			  <?php endif; ?>
+	      </div>						
+      <?php endforeach; ?>
+      
+    </div>
+
+  <?php if ($config['animation']=='move' && $config['container']) :?>  
+    <div class="but_prev jm-slide-prev"></div>
+    <div class="but_next jm-slide-next"></div>
+  <?php endif; ?>
+
+  <?php if ($config['showdesc']): ?>
+   <div class="maskDesc">
+    <div class="jm-slide-desc"></div>
+  </div>
+ <?php endif; ?>
+    </div>
+  <?php if($config['showdesc']){?>
+  <div class="jm-slide-descs">
+    <?php $i=1; foreach( $items as $k => $_product ) :?>
+      <div class="jm-slide-desc">
+		  <h3><a  href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+				<?php echo $this->htmlEscape($_product->getName()) ;?></a></h3>
+		  <?php echo nl2br($_product->getDescription()) ?>
+		  <?php if ($config['showdesc']=='desc-readmore'){?>
+			<a class="readmore" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>" title="">
+				<span><?php echo $config['readmoretext'];?></span>
+			</a>
+		<?php }?>
+	  </div>					
+    <?php endforeach; ?>					
+  </div>
+  <?php }?>
+  <div class="jm-slide-mask">
+  </div>
+  <?php if ($config['navigation']): ?>
+  
+  <div class="jm-slide-thumbs-wrap <?php echo 'jm-'.$config['navigationAlignment'];?>">
+    <div class="jm-slide-thumbs">
+		<?php $i=1; foreach( $items as $k => $_product ) :?>
+        <div class="jm-slide-thumb">
+			
+        <?php if ($config['navigation']=='thumbs') : ?>
+		<div  class="jm-slide-thumb-inner">
+		  <img align="left" src="<?php echo  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).$jmimage->resizeThumb( 'media/catalog/product'.$_product->getImage(), $config['thumbWidth'], $config['thumbHeight'] );?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>"/>
+		  <h3><?php echo $this->htmlEscape($_product->getName()) ;?></h3>	
+			<span style="padding-right: 10px;"><?php echo substr(nl2br($_product->getShortDescription()), 0, 60).'...';?></span>
+		</div>
+        <?php else: ?><span><?php echo ($i++);?></span><?php endif; ?>
+        </div>
+      <?php endforeach; ?>							
+    </div>
+
+    <div class="jm-slide-thumbs-mask" style="display:none"><span class="jm-slide-thumbs-mask-left">&nbsp;</span><span class="jm-slide-thumbs-mask-center">&nbsp;</span><span class="jm-slide-thumbs-mask-right">&nbsp;</span></div>
+
+    <p class="jm-slide-thumbs-handles">
+      <?php for ($i=0;$i<count($items); $i++) : ?>
+        <span>&nbsp;</span>
+      <?php endfor; ?>						
+    </p>
+  </div>
+  <?php endif; ?>
+  
+  <?php if ($config['control']): ?>
+  <div class="jm-slide-buttons clearfix">
+    <span class="jm-slide-prev">&laquo; Previous</span>
+    <span class="jm-slide-playback">&lsaquo; Playback</span>
+    <span class="jm-slide-stop">Stop</span>
+    <span class="jm-slide-play">Play &rsaquo;</span>
+    <span class="jm-slide-next">Next &raquo;</span>
+  </div>
+  <?php endif; ?>
+</div>

@@ -1,0 +1,118 @@
+<?php $rand = time().rand().rand();?>
+<?php if($listImgs){?>
+	<?php if(!defined('JM_ADD_JQUERY')){?>
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('joomlart/jmslideshow/js/jquery.js') ?>"></script>
+	<?php  define('JM_ADD_JQUERY', true); ?>
+	<?php }?>
+	<script type="text/javascript" src="<?php echo $this->getSkinUrl('joomlart/jmslideshow/js/jm.slideshow.js') ?>"></script>
+	<?php if(!defined('JM_ADD_SKIN_SILDESHOWS')){?>
+		
+	<?php  define('JM_ADD_SKIN_SILDESHOWS', true); ?>
+	<?php }?>		
+	<?php
+	  /*Convert to array*/
+	  $config['thumbSpace'] = preg_split ('/:/', $config['thumbSpace']);
+	?>
+	<script type="text/javascript">
+		jQuery.noConflict();
+	     jQuery(document).ready(function($){	     
+	     	$('#jm-slide-<?php echo $rand;?>').Slideshow2({
+	                startItem: <?php echo ($config['startItem'] - 1); ?>,
+	                showItem: <?php echo $config['showItem']; ?>,
+	                itemWidth: <?php echo (int)$config['thumbWidth']+ ((int)$config['thumbSpace'][0] * 2); ?>,
+	                itemHeight: <?php echo (int)$config['thumbHeight']+((int)$config['thumbSpace'][1] * 2); ?>,
+	                mainWidth: <?php echo (int)$config['mainWidth']; ?>,
+	                mainHeight: <?php echo (int)$config['mainHeight']; ?>,
+	                duration: <?php echo (int)$config['duration']; ?>,	               
+	                animation: '<?php echo $config['animation']; ?>',
+	                thumbOpacity:<?php echo $config['thumbOpacity']; ?>,			
+	                maskOpacity: '<?php echo $config['descOpacity']; ?>',
+			descOpacity :<?php echo $config['descOpacity']; ?>,
+			overlapOpacity :<?php echo $config['overlapOpacity']; ?>,
+	                buttonOpacity: '<?php echo $config['overlapOpacity']; ?>',
+	                showDesc: '<?php echo $config['showdesc']; ?>',
+	                descMode: '<?php echo $config['showdescwhen']; ?>',
+	                readmoretext: '<?php echo $config['readmoretext']; ?>',
+	                navigation:'<?php echo $config['navigation']; ?>',
+	                urls:['<?php echo implode('\',\'', $urls); ?>'],
+			thumbSpaces: [<?php echo intval($config['thumbSpace'][0]) ?> ,<?php echo intval($config['thumbSpace'][1])?>],
+			autoPlay: <?php echo $config['autoplay']; ?>,
+			but_prev: '.jm-slide-prev',
+			but_next: '.jm-slide-next',
+			but_play: '.jm-slide-play',
+			but_stop: '.jm-slide-stop',
+			but_playback: '.jm-slide-playback',
+			interval: <?php echo $config['interval']; ?>
+	        });
+	     });
+	</script>	
+<?php }?>
+
+
+
+<?php if($config['title']){?><h2><?php echo $config['title']; ?></h2><?php } ?>
+
+<div class="jm-slidewrap" id="jm-slide-<?php echo $rand;?>" style="visibility:hidden;">
+  <div class="jm-slide-main-wrap">
+    <div class="jm-slide-main">
+    
+      <?php for ($i=0;$i<count($listImgs); $i++) {?>
+	      <div class="jm-slide-item"><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).$mainsThumbs[$i];?>" alt=""/>
+	      <?php if ($config['showdesc'] == 'always' && $captionsArray[$i]):?><span class="jm-slide-desc"><?php echo $captionsArray[$i];?></span><?php endif; ?>
+	      </div>						
+      <?php }?>
+      
+    </div>
+  </div>
+  <?php if ($config['animation']=='move' && $config['container']) :?>  
+    <div class="but_prev jm-slide-prev"></div>
+    <div class="but_next jm-slide-next"></div>
+  <?php endif; ?>
+
+  <?php if ($config['showdesc']): ?>
+  <div class="maskDesc"><div class="inner"><?php if ($config['showdesc']=='desc-readmore'){?><a class="readon" title=""><span><?php echo $config['readmoretext'];?></span></a><?php }?></div>
+    <div class="jm-slide-desc"></div>
+  </div>
+ <?php endif; ?>
+  
+  <?php if($config['showdesc']){?>
+  <div class="jm-slide-descs">
+    <?php foreach($captionsArray as $desc) {?>
+      <div class="jm-slide-desc"><?php echo $desc?></div>					
+    <?php }?>					
+  </div>
+  <?php }?>
+  
+  <?php if ($config['navigation']): ?>
+  <div class="jm-slide-mask">
+  </div>
+  <div class="jm-slide-thumbs-wrap">
+    <div class="jm-slide-thumbs">
+      <?php for ($i=0;$i<count($listImgs); $i++) {?>
+        <div class="jm-slide-thumb">
+        <?php if ($config['navigation']=='thumbs'){?><img src="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).$thumbArray[$i]?>" alt="Photo Thumb" />
+        <?php }else{?><span><?php echo ($i+1);?></span><?php } ?>
+        </div>
+      <?php }?>							
+    </div>
+
+    <div class="jm-slide-thumbs-mask"><span class="jm-slide-thumbs-mask-left">&nbsp;</span><span class="jm-slide-thumbs-mask-center">&nbsp;</span><span class="jm-slide-thumbs-mask-right">&nbsp;</span></div>
+
+    <p class="jm-slide-thumbs-handles">
+      <?php for ($i=0;$i<count($listImgs); $i++) {?>
+        <span>&nbsp;</span>
+      <?php }?>						
+    </p>
+  </div>
+  <?php endif; ?>
+  
+  <?php if ($config['control']): ?>
+  <div class="jm-slide-buttons clearfix">
+    <span class="jm-slide-prev">&laquo; Previous</span>
+    <span class="jm-slide-playback">&lsaquo; Playback</span>
+    <span class="jm-slide-stop">Stop</span>
+    <span class="jm-slide-play">Play &rsaquo;</span>
+    <span class="jm-slide-next">Next &raquo;</span>
+  </div>
+  <?php endif; ?>
+</div>

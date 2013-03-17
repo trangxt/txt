@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<default>
+        <reference name="head">	
+        	<action method="addCss"><stylesheet>joomlart/jmrss/jm.rss.css</stylesheet></action>        	
+        </reference>
+    </default>    
+    
+    <!--
+    <default>
+      <reference name="content">		
+			<block type="joomlart_jmrss/list" name="jmrss" >
+				<action method="set">
+					<show>media/slideshow</show>
+					<title>JM RSS Feed</title>			
+					<show_introduce>1</show_introduce>			
+					<seturl>http://news.google.com/news?pz=1&ned=us&hl=en&output=rss</seturl>
+					<aquanlity>5</aquanlity>
+					<showLink>1</showLink>
+					<maxchars>0</maxchars>
+					<showDate>1</showDate>
+					<date_format>Y-m-d</date_format>									
+				</action>
+			</block>
+      </reference>
+    </default> 
+    -->
+</layout>

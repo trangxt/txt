@@ -1,0 +1,336 @@
+<?php
+/*------------------------------------------------------------------------
+# $JA#PRODUCT_NAME$ - Version $JA#VERSION$ - Licence Owner $JA#OWNER$
+# ------------------------------------------------------------------------
+# Copyright (C) 2004-2009 J.O.O.M Solutions Co., Ltd. All Rights Reserved.
+# @license - Copyrighted Commercial Software
+# Author: J.O.O.M Solutions Co., Ltd
+# Websites: http://www.joomlart.com - http://www.joomlancers.com
+# This file may not be redistributed in whole or significant part.
+-------------------------------------------------------------------------*/
+
+class JoomlArt_JmProducts_Block_List extends Mage_Catalog_Block_Product_Abstract {
+	var $_config = array ();
+	
+	public function __construct($attributes = array()) {
+		$helper = Mage::helper ( 'joomlart_jmproducts/data' );
+		
+		$this->_config ['show'] = $helper->get ( 'show', $attributes );
+		if (! $this->_config ['show'])
+			return;
+		
+		parent::__construct ();
+		
+		$this->_config ['mode'] = $helper->get ( 'mode', $attributes );
+		$this->_config ['title'] = $helper->get ( 'title', $attributes );
+		$this->_config ['catsid'] = $helper->get ( 'catsid', $attributes );
+		
+		$this->_config ['qty'] = $helper->get ( 'quanlity', $attributes );
+		$this->_config ['qty'] = $this->_config ['qty'] > 0 ? $this->_config ['qty'] : 5;
+		
+		$this->_config ['perrow'] = $helper->get ( 'perrow', $attributes );
+		$this->_config ['perrow'] = $this->_config ['perrow'] > 0 ? $this->_config ['perrow'] : 3;
+		
+		$this->_config['width'] = $helper->get('width', $attributes);
+		$this->_config['width'] = $this->_config['width']>0?$this->_config['width']:135;	
+		
+		$this->_config['height'] = $helper->get('height', $attributes);
+		$this->_config['height'] = $this->_config['height']>0?$this->_config['height']:135;	
+		
+		$this->_config['max'] = $helper->get('max', $attributes);
+		$this->_config['max'] = $this->_config['max']>0?$this->_config['max']:0;	
+		
+		//$this->_config['template'] = $helper->get('template', $attributes);
+		/*$this->_config['attributename'] = $helper->get('attributename', $attributes);
+		$this->_config['attributevalue'] = $helper->get('attributevalue', $attributes);*/
+				
+		$this->setProductCollection ( $this->getCategory () );
+	}
+		
+	function _toHtml() {
+		if (! $this->_config ['show'])
+			return;
+		
+		$listall = $this->getListProducts ();
+		
+		$this->assign ( 'listall', $listall );
+		$this->assign ( 'config', $this->_config );
+		
+		if (! isset ( $this->_config ['template'] ) || $this->_config ['template'] == '') {
+			$this->_config ['template'] = 'joomlart/jmproducts/list.phtml';
+		}
+		
+		$this->setTemplate ( $this->_config ['template'] );
+		
+		if ($listall && $listall->count () > 0) {
+			Mage::getModel ( 'review/review' )->appendSummary ( $listall );
+		}
+		
+		return parent::_toHtml ();
+	}
+	
+	function getListProducts() {
+		$listall = null;
+		switch ($this->_config ['mode']) {
+			case 'latest' :
+				$listall = $this->getListBestBuyProducts ( 'updated_at', 'desc' );
+				break;
+			case 'feature' :
+				break;
+			case 'best_buy' :
+				$listall = $this->getListBestBuyProducts ();
+				break;
+			case 'most_viewed' :
+				$listall = $this->getListMostViewedProducts ();
+				break;
+			case 'most_reviewed' :
+				$listall = $this->getListTopRatedProducts ( 'reviews_count' );
+				break;
+			case 'top_rated' :
+				$listall = $this->getListTopRatedProducts ();
+				break;
+			case 'attribute' :
+				$listall = $this->getListFeaturedProduct ();
+				break;
+		}
+		
+		return $listall;
+	}
+	
+	function getListTopRatedProducts($orderfeild = 'rating_summary', $order = 'desc', $perPage = NULL, $currentPage = 1) {
+		$list = null;
+		if ($perPage === NULL)
+			$perPage = ( int ) $this->_config ['qty'];
+		
+        $storeId = Mage::app ()->getStore ()->getId ();
+		
+		$entityCondition = '_reviewed_order_table.entity_id = e.entity_id';
+		
+        if($this->_config['catsid']){
+            // get array product_id
+            $arr_productids = $this->getProductByCategory();    
+            
+		    $products = Mage::getResourceModel ( 'catalog/product_collection' )->setStoreId ( $storeId )->addAttributeToSelect ( '*' )->addStoreFilter ( $storeId )->addIdFilter($arr_productids);
+        }else{
+            $products = Mage::getResourceModel ( 'catalog/product_collection' )->setStoreId ( $storeId )->addAttributeToSelect ( '*' )->addStoreFilter ( $storeId );
+        }    
+		
+		$products->getSelect ()->joinLeft ( array ('_reviewed_order_table' => $products->getTable ( 'review_entity_summary' ) ), "_reviewed_order_table.store_id=$storeId AND _reviewed_order_table.entity_pk_value=e.entity_id", array () );
+		
+		$products->getSelect ()->order ( "_reviewed_order_table.$orderfeild $order" );
+		$products->getSelect ()->group ( 'e.entity_id' );
+		
+		$products->setPageSize ( $perPage )->setCurPage ( $currentPage );
+		
+		$this->setProductCollection ( $products );
+        
+        $this->_addProductAttributesAndPrices($products);
+		
+		if (($_products = $this->getProductCollection ()) && $_products->getSize ()) {
+			$list = $products;
+		}
+		
+		return $list;
+	}
+	
+	function getListMostViewedProducts($perPage = NULL, $currentPage = 1) {
+		/* 
+			Always set de $perPage, by template or by config 
+			if $perPage eq 0 (zero) not limit the list
+		*/
+		if ($perPage === NULL)
+			$perPage = ( int ) $this->_config ['qty'];
+		
+        /*
+			Show all the product list in the current store			
+		*/
+		$storeId = Mage::app ()->getStore ()->getStoreId ();
+		$this->setStoreId ( $storeId );
+		
+        if($this->_config['catsid']){
+            // get array product_id
+            $arr_productids = $this->getProductByCategory();    
+            
+		    $this->_productCollection = Mage::getResourceModel ( 'reports/product_collection' )->addIdFilter($arr_productids);
+        }else{
+            $this->_productCollection = Mage::getResourceModel ( 'reports/product_collection' );
+        }    
+		
+		$this->_productCollection = $this->_productCollection->addViewsCount ();
+		
+		$this->_productCollection = $this->_productCollection->addAttributeToSelect ( '*' )->setStoreId ( $storeId )->addStoreFilter ( $storeId )->setPageSize ( $perPage );
+        
+        $this->_addProductAttributesAndPrices($this->_productCollection);
+        
+		return $this->_productCollection;
+	}
+	
+	function getListBestBuyProducts($fieldorder = 'ordered_qty', $order = 'desc', $product_ids = '', $perPage = NULL, $currentPage = 1) {
+		$list = null;
+		/* 
+			Always set de $perPage, by template or by config 
+			if $perPage eq 0 (zero) not limit the list
+		*/
+		if ($perPage === NULL)
+			$perPage = ( int ) $this->_config ['qty'];
+		/*
+			Show all the product list in the current store
+			order by ordered_qty, showing the bestsellers first
+		*/
+       
+		$storeId = Mage::app ()->getStore ()->getId ();
+		
+        if($this->_config['catsid']){
+            // get array product_id
+            $arr_productids = $this->getProductByCategory();    
+
+            $products = Mage::getResourceModel ( 'catalog/product_collection' )
+                        ->setStoreId ( $storeId )
+                        ->addAttributeToSelect ( '*' )
+                        ->addStoreFilter ( $storeId )
+                        ->setOrder ( $fieldorder, $order )
+                        ->addIdFilter($arr_productids)
+                        ;
+        }else{
+            $products = Mage::getResourceModel ( 'catalog/product_collection' )->setStoreId ( $storeId )->addAttributeToSelect ( '*' )->addStoreFilter ( $storeId )->setOrder ( $fieldorder, $order );
+        }        
+        
+        if ($product_ids) {
+			$products->getSelect()->where("e.entity_id in ($product_ids)");
+		}
+              
+		/*
+			Filter list of product showing only the active and 
+			visible product
+		*/
+		Mage::getSingleton ( 'catalog/product_visibility' )->addVisibleInCatalogFilterToCollection ( $products );
+		Mage::getSingleton ( 'catalog/product_status' )->addVisibleFilterToCollection ( $products );
+		
+		$products->setPageSize ( $perPage )->setCurPage ( $currentPage );
+		            
+		$this->setProductCollection ( $products );
+        
+        $this->_addProductAttributesAndPrices($products);
+		                  
+		if (($_products = $this->getProductCollection ()) && $_products->getSize ()) {            
+			$list = $_products;
+		}
+		
+        
+        
+		return $list;
+	}
+	
+	function getListFeaturedProduct() {
+		
+		$list = array ();
+		// instantiate database connection object
+		
+
+		$resource = Mage::getSingleton ( 'core/resource' );
+		
+		$read = $resource->getConnection ( 'catalog_read' );
+		
+		$categoryProductTable = $resource->getTableName ( 'catalog/category_product' );
+		
+		$productEntityIntTable = ( string ) Mage::getConfig ()->getTablePrefix () . 'catalog_product_entity_int';
+		
+		$eavAttributeTable = $resource->getTableName ( 'eav/attribute' );
+		
+		// Query database for featured product        
+		$select = $read->select ( 'cp.product_id' )->
+
+		from ( array ('cp' => $categoryProductTable ) )->
+
+		join ( array ('pei' => $productEntityIntTable ), 'pei.entity_id=cp.product_id', array () )->
+
+		joinNatural ( array ('ea' => $eavAttributeTable ) )->
+
+		where ( "pei.value='1'" )->
+
+		where ( "ea.attribute_code='featured'" );
+
+		//->where($cond_category_id)
+		
+
+		
+		
+		$rows = $read->fetchAll ( $select );
+		
+		$product_ids = array ();
+		if ($rows) {
+			foreach ( $rows as $row ) {
+				$product_ids [] = $row ['product_id'];
+			}
+			$product_ids = implode ( ',', $product_ids );
+			$list = $this->getListBestBuyProducts ( 'updated_at', 'desc', $product_ids );
+		}
+		
+		return $list;
+	}
+		
+	function set($show=1, $mode='', $title='', $catsid='', $quanlity=9, $perrow=3, $template='', $width ='135', $height='135', $max ='80'){
+		if(!$mode || !$show){
+            $this->_config['show'] = 0; 
+			return ;
+		}		
+		
+		if($mode) $this->_config['mode'] = $mode;
+		if($title) $this->_config['title'] = $title;
+		if($catsid!='') 	$this->_config['catsid'] = $catsid;
+		if($quanlity)		$this->_config['qty'] = $quanlity;
+		if($perrow)		$this->_config['perrow'] = $perrow;
+		
+		// -- added by Duchh 15/12/2009
+		if($width)		$this->_config['width'] = $width;
+		if($height)		$this->_config['height'] = $height;
+		if($max)		$this->_config['max'] = $max;
+		//if($attributename)		$this->_config['attributename'] = $attributename;
+		//if($attributevalue)		$this->_config['attributevalue'] = $attributevalue;		
+        //if($template!='')     $this->_config['template'] = $template;
+	}
+    
+    // ++ added by congtq 18/09/2009
+    /**
+    * check the array existed in the other array
+    *
+    */
+   	function inArray($source, $target) {
+		for($j = 0; $j < sizeof ( $source ); $j ++) {
+			if (in_array ( $source [$j], $target )) {
+				return true;
+                //echo 'ok';
+			}
+		}
+	}
+	// -- added by congtq 18/09/2009
+    
+    // ++ added by congtq 27/10/2009
+    function getProductByCategory(){
+        $return = array(); 
+        $pids = array();
+        
+        $products = Mage::getResourceModel ( 'catalog/product_collection' );
+         
+        foreach ($products->getItems() as $key => $_product){
+            $arr_categoryids[$key] = $_product->getCategoryIds();
+            
+            if($this->_config['catsid']){    
+                if(stristr($this->_config['catsid'], ',') === FALSE) {
+                    $arr_catsid[$key] =  array(0 => $this->_config['catsid']);
+                }else{
+                    $arr_catsid[$key] = explode(",", $this->_config['catsid']);
+                }
+                
+                $return[$key] = $this->inArray($arr_catsid[$key], $arr_categoryids[$key]);
+            }
+        }
+        
+        foreach ($return as $k => $v){ 
+            if($v==1) $pids[] = $k;
+        }    
+        
+        return $pids;   
+    }
+    // -- added by congtq 27/10/2009
+}

@@ -1,0 +1,68 @@
+  <div class="ja-box-center" style="width: 24.9%;">
+	<div class="box">
+    <div class="head">
+    	<?php if($this->_config['title']){?><h2><?php echo $this->_config['title']; ?></h2><?php } ?>        
+    </div>
+   	<div class="content">           
+		  	<?php if (count($this->_rss_content)>1) {
+						$i = 0;
+						if($this->_config['show_introduce']){
+							if (isset($this->_rss_content['image_url'])) {?>
+						       <a href="<?php echo $this->_rss_content['image_link']?>">
+						       		<img src="<?php echo $this->_rss_content['image_url']?>" alt="<?php echo $this->_rss_content['image_title']?>" vspace="1" border="0" />
+						       	</a>
+						       		<br />
+						   <?php  }?>
+						    
+
+						   <?php if(isset($this->_rss_content['link'])){?>
+						    	<h3>
+						    		<a href="<?php echo $this->htmlEscape($this->_rss_content['link'])?>">
+						    		<?php echo $this->_rss_content['title']?>						    		
+						    		</a>
+						    	</h3>
+						    <?php } elseif(isset($this->_rss_content['title'])){?>
+						    	<h3>{$this->_rss_content['title']}</h3>
+						    <?php  }?>
+						    
+						    <?php if(isset($this->_rss_content['description']) && $this->_rss_content['description']!=''){?>
+						    	<?php echo $this->_rss_content['description']?>
+						    	<br />
+						     <?php  }?>						    
+						   
+						<?php  }?>		
+						
+						<ul>
+					    <?php  foreach($this->_rss_content['new_items'] as $k=>$item) {?>
+					    	<li class="jm-item">
+					    	
+						    	<?php  if(!$this->_config['showLink']){?>
+						    		<?php echo $this->htmlEscape($item['title']);?>
+						    	
+						    	<?php }else{ ?>
+						    		<a href="<?php echo $this->htmlEscape($item['link'])?>">
+						    			<?php echo  $item['title']?>
+						    		</a>
+						    	<?php  }?>		
+						    	
+						    	<?php  if( $this->_config['showDate'] && isset($item['pubDate'])){	 				 						        
+									 $time = strtotime ($item['pubDate']);	?>	
+									<br />					
+									 <?php echo date( $this->_config['date_format'] , $time)?>
+							 	<?php  }?>	
+							 	
+							 	<?php if($this->_config['show_introduce'] && isset($item['description']) && $item['description']!=''){?>
+						    	<div>
+						    		<?php  echo  $item['description']?>
+						    	</div>
+						    	<?php  }?>	
+					        </li>
+					    <?php  }?>
+					    </ul>
+
+		  	<?php }else {
+			    echo "Error: It's not possible to reach RSS file...\n";
+			} ?>
+   </div>
+	 </div>
+</div>

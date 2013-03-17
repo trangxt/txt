@@ -1,0 +1,78 @@
+﻿<!-- BOTTOM SPOTLIGHT -->
+<!--
+<div id="ja-botsl" class="wrap">
+<div class="main clearfix">
+  <div class="ja-box-left" style="width: 33.3%;">
+  	<div class="box">
+  		<h3>Popular search</h3>
+  		Augue Morbi nulla <a href="#" title="tags"><span style="font-size: 14px;">Logitech</span></a> vel dis et <a href="#" title="tags"><span style="font-size: 20px;">Mitsumi</span></a> est montes magna. <a href="#" title="tags"><span style="font-size: 16px;">Sony</span></a> tincidunt ut Nullam volutpat urna laoreet Nullam hac <a href="#" title="tags"><span style="font-size: 22px;">Razer</span></a> id. Augue eros diam velit facilisis sagittis nisl pede lacus congue Integer. <a href="#" title="tags"><span style="font-size: 20px;">IBM</span></a> vitae est montes magna. <a href="#" title="tags"><span style="font-size: 16px;">HP</span></a>
+  	</div>
+  </div>
+  <div class="ja-box-center" style="width: 33.3%;">
+  	<div class="box">
+  		<h3>Today blogs</h3>
+  		
+  		<div class="ja-innerdiv">
+  			<span class="title"><a href="#" title="Sample link">Nam Quisque adipiscing Nulla Quisque</a></span>
+  			Risus vel nibh at vitae elit tellus massa elit Nam nibh.
+  		</div>
+  		<div class="ja-innerdiv">
+  			<span class="title"><a href="#" title="Sample link">Risus vel nibh at vitae</a></span>
+  			Velit semper Nulla eros semper nec Nunc lacinia sollicitudin vitae In
+  		</div>
+  		<div class="ja-innerdiv">
+  			<span class="title"><a href="#" title="Sample link">Senectus condimentum quis Proin dapibus</a></span>
+  			Est Suspendisse pellentesque commodo est.
+  		</div>
+  		
+  	</div>
+  </div>
+  <div class="ja-box-right" style="width: 33.3%;">
+  	<div class="box">
+  		<h3>Support center</h3>
+  		Eget in nascetur sed Nulla a eleifend lorem consectetuer justo aliquet. Dolor Aliquam nibh velit Curabitur dolor urna Ut Nulla pede Pellentesque
+  		<ul>
+  			<li><strong>Tel: </strong>(+844) 2212820</li>
+  			<li><strong>Fax: </strong>(+844) 2212820</li>
+  			<li><strong>Email: </strong>contact@joomlart.com</li>
+  			<li><strong>Website: </strong>www.joomlart.com</li>
+  		</ul>
+  	</div>
+  </div>
+</div>
+</div>
+-->
+<!-- //BOTTOM SPOTLIGHT -->
+
+<div id="ja-footer" class="wrap">
+<div class="main clearfix">
+	<div class="sublogo">
+		<a href="http://10.22.32.6:83/shopcbg/index.php/?___SID=U">JM Mesolite</a>
+	</div>
+	
+	<div class="jm-info">
+	
+	  <ul>
+<li><a href="http://10.22.32.6:83/shopcbg/index.php/about-magento-demo-store?___SID=U">About Us</a></li>
+<li class="last"><a href="http://10.22.32.6:83/shopcbg/index.php/customer-service?___SID=U">Customer Service</a></li>
+</ul><ul class="links">
+                        <li class="first" ><a href="http://10.22.32.6:83/shopcbg/index.php/catalog/seo_sitemap/category/?___SID=U" title="Site Map" >Site Map</a></li>
+                                <li ><a href="http://10.22.32.6:83/shopcbg/index.php/catalogsearch/term/popular/?___SID=U" title="T&igrave;m theo t&#7915; kh&oacute;a" >T&igrave;m theo t&#7915; kh&oacute;a</a></li>
+                                <li ><a href="http://10.22.32.6:83/shopcbg/index.php/catalogsearch/advanced/?___SID=U" title="T&igrave;m n&acirc;ng cao" >T&igrave;m n&acirc;ng cao</a></li>
+                                <li ><a href="http://10.22.32.6:83/shopcbg/index.php/contacts/?___SID=U" title="Li&ecirc;n h&#7879;" >Li&ecirc;n h&#7879;</a></li>
+                                <li class=" last" ><a href="http://10.22.32.6:83/shopcbg/index.php/rss/?___SID=U" title="RSS" class="link-rss">RSS</a></li>
+            </ul>
+	
+		<div class="jm-legal">
+		<!-- Help Us to Keep aiSHOP Healthy - <a href="http://www.magentocommerce.com/bug-tracking" id="bug_tracking_link"><strong>Report All Bugs</strong></a> (ver. 1.5.0.1)<br /> -->
+		<script type="text/javascript">
+		    //$('bug_tracking_link').target = "varien_external";
+		</script>
+		&copy; 2011 TRUNG TÂM DỊCH VỤ KHÁCH HÀNG BƯU ĐIỆN TỈNH CAO BẰNG</br>
+Địa chỉ: Phố Hoàng Văn Thụ Phường Hợp Giang - Thi Xã Cao Bằng </br>. 
+	Bưu điện tỉnh Cao Bằng  <a href="http://www.cbpost.vnpost.vn/" title="edit by Trần Linh">cbpost.vnpost.vn</a>.
+		</div>
+	
+	</div>
+</div>
+</div>

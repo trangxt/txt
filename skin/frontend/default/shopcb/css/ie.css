@@ -1,0 +1,111 @@
+.col2-set,
+.col3-set,
+.col4-set,
+.col2-alt-set,
+.head,
+.page-head,
+.page-head-alt,
+.page-popup .print-head,
+.header-top-container,
+.header-top,
+.header-nav-container,
+.header-nav,
+.middle,
+.product-img-box .more-views ul,
+.button-set,
+.actions,
+.button-container,
+.ratings,
+.page-head,
+.page-head-alt,
+.advanced-search li,
+.group-select li,
+.search-autocomplete li,
+.side-col li,
+.account-box li,
+.address-list li,
+.listing-type-list .listing-item,
+.listing-type-list .product-info .product-reviews,
+.account-nav a,
+.account-box,
+.my-review-detail,
+.generic-product-list li,
+.product-options dt,
+.product-options dd ul.options-list li,
+.product-options dd ul.options-list .label,
+.product-options-bottom,
+.truncated_full_value,
+.add-to-holder,
+.advanced-search-summary-box,
+.listing-type-grid .grid-row,
+.one-page-checkout li.section,
+.one-page-checkout .default-box,
+.box ol li,
+.multi-address-checkout-box .box,
+.page-title, .page-title-alt,
+.product-collateral .head,
+.add-tag-box,.form-add,
+.box-account .box-head,
+.jm-products-slider-listing .head,
+.form-list li,
+.opc .step-title,
+.cart-collaterals .col2-set #discount-coupon-form,
+.cart-collaterals .col2-set .shipping,
+.page-sitemap .pager,
+.products-list .item,
+.my-account ol li,
+.cart-collaterals .col2-set .crosssell li,
+.buttons-set,
+.multiple-checkout .box,
+.product-collateral,
+.block ol li,
+.add-to-box,
+.box-account .tags,
+.button-set,
+.block-title,
+#ja-sidenav li li a,
+#ja-sidenav li li,
+.shopping-cart-collaterals .box, .cart-collaterals .col2-set .discount, .cart-collaterals .col2-set .shipping,
+.cart-collaterals .totals ul.checkout-types li  { zoom: 1; }
+
+.box .head {
+	height: 1%;
+}
+
+input.radio,input.checkbox { width:13px; height:13px; vertical-align: middle;margin-top: 3px;}
+
+.form-button,.form-button-alt { padding: 1px 10px 0; }
+
+.btn-cart {
+	vertical-align: top;
+}
+
+/* Clearer */
+.clear { clear:both; font-size:0; line-height:0; height:0; visibility:hidden; overflow:hidden; }
+
+*+html .clearfix {
+	display: inline-block !important;
+}
+
+* html .cart-collaterals .totals ul.checkout-types .btn-checkout  {
+	margin-right: 10px;
+}
+
+#ja-pathway {
+	width: 100%;
+}
+
+*+html .block-account li {
+	zoom: 0;
+}
+
+*+html  #ja-sidenav li {
+	background: #fff;
+	width: 100%;
+	display: inline;
+}
+
+*+html #ja-sidenav li li {
+	display: block;
+	width: 90%;
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<default>
+        <reference name="head">	
+        	<action method="addCss"><stylesheet>joomlart/jmslideshow/css/jm.slideshow.css</stylesheet></action>
+        	
+        </reference>
+    </default>
+
+    <cms_index_index>
+      <reference name="topsl">		
+			<block type="joomlart_jmslideshow/list" name="jmslideshow" >
+				<action method="set">
+					<params>
+					</params>
+				</action>
+			</block>
+      </reference>
+    </cms_index_index>
+		
+</layout>

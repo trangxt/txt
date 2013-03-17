@@ -1,0 +1,38 @@
+/* Using CSS3 for some visual enhancements. (Will be degraded
+	nicely for non-CSS3 browsers.)
+-------------------------------------------------------------*/
+
+/* ROUNDED ELEMENTS
+--------------------------------------------------------------*/
+#ja-current-content, #ja-search, #ja-topsl, /*#ja-wrapper, layout*/
+.box, .login-box .new-users h4, .login-box .registered-users h4, .generic-box,.block,.order-info-box, /*box*/
+.form-button, .form-button-alt, input.input-text, select, textarea, .group-select,.button,.fieldset, /*form*/
+.error-msg, .success-msg, .notice-msg, .note-msg, /*msg*/
+.account-box .inner-head, .account-box ol .count,.box-account .inner-head,
+.one-page-checkout .step-count, .one-page-checkout .head, .one-page-checkout .active .head, table.view-by strong, .group-select .legend,
+.multi-address-checkout-box .legend, .multi-address-checkout-box .count-head-alt, .add-to-holder, .product-pricing /*others*/ {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px; 
+}
+
+/*Top Corners---*/
+.box .head, .jm-product-list h2, .jm-products-slider-listing h2, .jm-product-list-bycat h2, #ja-pathway,
+#product-options-wrapper,.block .block-title {
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	-moz-border-radius-topleft: 3px;  
+	-moz-border-radius-topright: 3px;
+	-webkit-border-top-right-radius: 3px;  
+	-webkit-border-top-left-radius: 3px; 
+}
+
+.box .actions, .mini-compare-products p.no-item, .mini-cart p.no-item, .narrow-by dl,
+.product-options-bottom,.block .actions {
+	border-bottom-right-radius: 3px;
+	border-bottom-left-radius: 3px;
+	-moz-border-radius-bottomleft: 3px;  
+	-moz-border-radius-bottomright: 3px;
+	-webkit-border-bottom-right-radius: 3px;  
+	-webkit-border-bottom-left-radius: 3px; 
+}

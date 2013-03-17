@@ -1,0 +1,10 @@
+﻿   
+  <?php 
+  
+	$order = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
+	if ($order->getPayment()->getMethod() == "baokim") {
+	$this->ktcheckout();
+?>
+ <p><?php echo $this->__('Hãy Click vào đây để thanh toán ngay qua Bảo Kim') ?></br>
+        <a href="<?php echo $this->thanhtoanbaokim();?>" target="new"><img src="https://www.baokim.vn/application/uploads/integrate/baokim_integrate_1.jpg"></a></p>
+<?php }?>

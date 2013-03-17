@@ -1,0 +1,200 @@
+<?xml version="1.0"?>
+<config>
+	<tabs>
+        <joomlart translate="label" module="joomlart_jmrss">
+            <label>JoomlArt</label>
+            <sort_order>210</sort_order>
+        </joomlart>
+    </tabs>
+	<sections>
+        <joomlart_jmrss>
+            <label>JM RSS Reader </label>
+            <tab>joomlart</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+           		<joomlart_jmrss translate="label">
+                    <label>JM RSS: Config General</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>     
+                    	<show translate="label" module="core">
+							<label>Enable</label>
+							<sort_order>10</sort_order>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</show>	
+						<title translate="label" module="core">
+							<label>Title of Module</label>
+							<sort_order>20</sort_order>
+							<frontend_type>text</frontend_type>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</title>	
+						<seturl translate="label">
+							<label>Set URL</label>
+							<sort_order>30</sort_order>
+							<comment>enter the supply rss</comment>
+							<frontend_type>text</frontend_type>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</seturl>  
+						<show_introduce translate="label">
+							<label>Show introduce</label>
+							<sort_order>35</sort_order>
+							<frontend_type>select</frontend_type>
+							<comment>Show the referral source rss</comment>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</show_introduce>                   	
+						<aquanlity translate="label">
+							<label>Articles number</label>
+							<sort_order>40</sort_order>
+							<frontend_type>text</frontend_type>
+							<comment>enter number</comment>
+							<backend_model>joomlart_jmrss/system_config_backend_jmRSS_checkvalue</backend_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</aquanlity>						
+						<showLink translate="label" module="core">
+							<label>Enable Links</label>
+							<sort_order>50</sort_order>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</showLink>		
+																				                                             
+						<maxchars translate="label">
+							<label>Max of chars</label>
+							<sort_order>70</sort_order>
+							<frontend_type>text</frontend_type>
+							<comment>Enter number. 0 for hide the description</comment>
+							<backend_model>joomlart_jmrss/system_config_backend_jmRSS_checkvalue</backend_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</maxchars>	
+						
+						<showDate translate="label" module="core">
+							<label>Show Date</label>
+							<sort_order>80</sort_order>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</showDate>				
+						<date_format translate="label">
+                            <label>Date format: </label>
+                            <comment>Eg. m-d-Y H:i:s</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </date_format>
+                        <support_html translate="label">
+                            <label>Type: </label>
+                            <frontend_type>select</frontend_type>
+							<source_model>joomlart_jmrss/system_config_source_listType</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </support_html>
+						 <!--<showImage translate="label" module="core">
+							<label>Show thumbnail</label>
+							<sort_order>100</sort_order>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</showImage>
+						
+						<width translate="label">
+							<label>Width of thumbnail</label>
+							<sort_order>120</sort_order>
+							<frontend_type>text</frontend_type>
+							<backend_model>joomlart_jmrss/system_config_backend_jmRSS_checkvalue</backend_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</width>		
+						<height translate="label">
+							<label>Height of thumbnail</label>
+							<sort_order>130</sort_order>
+							<frontend_type>text</frontend_type>
+							<backend_model>joomlart_jmrss/system_config_backend_jmRSS_checkvalue</backend_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</height>		
+						
+					 	<folderImage translate="label">
+                            <label>Path of image folder </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                      	</folderImage>    --> 																		
+							
+            		</fields>
+            	
+              	</joomlart_jmrss>
+				
+              	<joomlart_jmrss_cache translate="label">                             
+                    <label>JM RSS: Config Cache</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+					<fields>
+						<jmodeCache translate="label" module="core">
+							<label>Enable Cache</label>
+							<sort_order>10</sort_order>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</jmodeCache>		      
+					
+							   
+						<cachelife translate="label">
+							<label>Cache lifetime (ms)</label>
+							<sort_order>20</sort_order>
+							<frontend_type>text</frontend_type>
+							<backend_model>joomlart_jmrss/system_config_backend_jmRSS_checkvalue</backend_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</cachelife>                 
+					</fields>
+            
+ 				</joomlart_jmrss_cache>
+
+			</groups>
+
+        </joomlart_jmrss>
+    </sections>    
+</config>

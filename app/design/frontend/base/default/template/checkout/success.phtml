@@ -1,0 +1,204 @@
+﻿<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Your order has been received') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+<?php if ($this->getCanViewOrder()) :?>
+    <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
+<?php  else :?>
+    <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?>.</p>
+<?php endif;?>
+    <p> 
+	<?php 
+  class NL_Checkout 
+{
+	// URL chheckout của nganluong.vn
+	private $nganluong_url;
+	// Mã merchante site 
+	private $merchant_site_code;	// Biến này được nganluong.vn cung cấp khi bạn đăng ký merchant site
+
+	// Mật khẩu bảo mật
+	private $secure_pass; // Biến này được nganluong.vn cung cấp khi bạn đăng ký merchant site
+
+	
+	function __construct($nganluong_url,$merchant_site_code,$secure_pass)
+	{
+	     $this->nganluong_url=$nganluong_url;
+		 $this->merchant_site_code=$merchant_site_code;
+		 $this->secure_pass=$secure_pass;
+	}
+	
+	//Hàm xây dựng url, trong đó có tham số mã hóa (còn gọi là public key)
+	public function buildCheckoutUrl($return_url, $receiver, $transaction_info, $order_code, $price)
+	{
+		
+		// Mảng các tham số chuyển tới nganluong.vn
+		$arr_param = array(
+			'merchant_site_code'=>	strval($this->merchant_site_code),
+			'return_url'		=>	strtolower(urlencode($return_url)),
+			'receiver'			=>	strval($receiver),
+			'transaction_info'	=>	strval($transaction_info),
+			'order_code'		=>	strval($order_code),
+			'price'				=>	strval($price)					
+		);
+		$secure_code ='';
+		$secure_code = implode(' ', $arr_param) . ' ' . $this->secure_pass;
+		$arr_param['secure_code'] = md5($secure_code);
+		
+		/* Bước 2. Kiểm tra  biến $redirect_url xem có '?' không, nếu không có thì bổ sung vào*/
+		$redirect_url = $this->nganluong_url;
+		if (strpos($redirect_url, '?') === false)
+		{
+			$redirect_url .= '?';
+		}
+		else if (substr($redirect_url, strlen($redirect_url)-1, 1) != '?' && strpos($redirect_url, '&') === false)
+		{
+			// Nếu biến $redirect_url có '?' nhưng không kết thúc bằng '?' và có chứa dấu '&' thì bổ sung vào cuối
+			$redirect_url .= '&';			
+		}
+				
+		/* Bước 3. tạo url*/
+		$url = '';
+		foreach ($arr_param as $key=>$value)
+		{
+			if ($url == '')
+				$url .= $key . '=' . $value;
+			else
+				$url .= '&' . $key . '=' . $value;
+		}
+		
+		return $redirect_url.$url;
+	}
+	public function verifyPaymentUrl($transaction_info, $order_code, $price, $payment_id, $payment_type, $error_text, $secure_code)
+	{
+		// Tạo mã xác thực từ chủ web
+		$str = '';
+		$str .= ' ' . strval($transaction_info);
+		$str .= ' ' . strval($order_code);
+		$str .= ' ' . strval($price);
+		$str .= ' ' . strval($payment_id);
+		$str .= ' ' . strval($payment_type);
+		$str .= ' ' . strval($error_text);
+		$str .= ' ' . strval($this->merchant_site_code);
+		$str .= ' ' . strval($this->secure_pass);
+
+        // Mã hóa các tham số
+		$verify_secure_code = '';
+		$verify_secure_code = md5($str);
+		
+		// Xác thực mã của chủ web với mã trả về từ nganluong.vn
+		if ($verify_secure_code === $secure_code) return true;
+		
+		return false;
+	}
+}
+//thực hiện kiểm tra checkout
+ $order = Mage::getModel('sales/order')->loadByIncrementId($this->getOrderId());
+if(isset($_GET['secure_code']) && !empty($_GET['secure_code'])) #Nhận thông tin
+{
+	#Thông tin giao dịch
+	$transaction_info = @$_GET['transaction_info'];
+	#Mã sản phẩm, mã đơn hàng, giỏ hàng giao dịch
+	$order_code = @$_GET['order_code'];
+	#Tổng số tiền thanh toán
+	$price = @$_GET['price'];
+	#Mã giao dịch thanh toán tại nganluong.vn
+	$payment_id = @$_GET['payment_id'];
+	#Loại giao dịch tại nganluong.vn (1=thanh toán ngay, 2=thanh toán tạm giữ)
+	$payment_type = @$_GET['payment_type'];
+	#Thông tin chi tiết về lỗi trong quá trình thanh toán
+	$error_text = @$_GET['error_text'];
+	#Lấy mã kiểm tra tính hợp lệ của đầu vào
+	$secure_code = @$_GET['secure_code'];
+	#Xử lý đầu vào
+	$nl = new NL_Checkout();
+	$check = $nl->verifyPaymentUrl($transaction_info, $order_code, $price, $payment_id, $payment_type, $error_text, $secure_code);
+	if($check === false)
+	{
+		#Tham số gửi về không hợp lệ, có sự can thiệp từ bên ngoài
+		echo 'Kết quả thanh toán không hợp lệ';
+	}
+	else
+	{
+		if($error_text != '')
+		{
+			#Có lỗi trong quá trình thanh toán
+			echo 'Có lỗi: '.$error_text.'! Hãy thực hiện lại!';
+		}
+		else
+		{
+			#Thanh toán thành công
+			echo 'Thanh toán thành công!';
+		}
+	}
+}
+else #Gửi thông tin
+{
+	#Mã sản phẩm, mã đơn hàng, mã giỏ hàng
+	$order_code =$this->__($this->escapeHtml($this->getOrderId()));
+	#Tổng số tiền thanh toán
+	$price = $order->getTotalDue();
+	#Thông tin giao dịch đến nganluong.vn
+	$nl = new NL_Checkout($_SESSION['nganluong'],$_SESSION['merchantID'],$_SESSION['mabaomat']);
+	$url = $nl->buildCheckoutUrl($_SESSION['return_url'], $_SESSION['receiver'],'', $order_code, $price);
+       if ($order->getPayment()->getMethod() == "nganluong")
+    {?>
+       <p><?php echo $this->__('Hãy Click vào đây để thanh toán ') ?>
+        <a href=<?php echo $url ?> target=new><img src="https://www.nganluong.vn/data/images/buttons/11.gif"></a></p>
+   <?php }
+}
+?>
+	</p>
+<?php if ($this->getViewOrder() && $this->getCanPrintOrder()) :?>
+    <p>
+        <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
+        <?php echo $this->getChildHtml() ?>
+    </p>
+<?php endif;?>
+<?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+<?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+<ul class="disc">
+<?php foreach($profiles as $profile):?>
+<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>

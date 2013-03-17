@@ -1,0 +1,86 @@
+/* MAIN LAYOUT DIVS
+--------------------------------------------------------- */
+#ja-wrapper {}
+
+.wrap { width: 100%; clear: both; }
+
+.main { width: 992px; margin: 0 auto; }
+
+.narrow #ja-wrapper, .narrow .main { width: 758px; margin: 0 auto; }
+
+/* HEADER
+--------------------------------------------------------- */
+#ja-header {
+}
+
+/* CONTAINER
+--------------------------------------------------------- */
+#ja-main { float: left; width: 760px; }
+
+/*main content---*/
+#ja-content { clear: both; display: block; float: right; width: 535px; }
+#ja-current-content { }
+
+/*columns---*/
+#ja-col1 { float: left; width: 220px; }
+#ja-col2 { float: right; width: 220px; overflow: hidden; }
+
+/* FOOTER
+--------------------------------------------------------- */
+#ja-footer {}
+
+/* EXTENSIBLE LAYOUT
+--------------------------------------------------------- */
+/*1 Column---*/
+.ja-lo-1col #ja-current-content { margin: 0; }
+.ja-lo-1col #ja-main,.ja-lo-1col #ja-content {
+ float: none; width: 100%; }
+
+/*Content + 1 Columns Right---*/
+.ja-lo-2colsr #ja-content { float: none; width: 100%; }
+.ja-lo-2colsr #ja-current-content { margin-left: 0; }
+
+/*Content + 1 Columns Left---*/
+.ja-lo-2colsl #ja-main { float: none; width: 100%; }
+.ja-lo-2colsl #ja-content { width: 760px; }
+.ja-lo-2colsl #ja-current-content { margin-right: 0; }
+.ja-lo-2colsl #ja-col1 { width: 220px; }
+
+/* IN PAGE LAYOUTS
+--------------------------------------------------------- */
+.middle { width:980px; min-height:400px; margin:0 auto; text-align:left; }
+.side-col { width:195px; }
+.col-left { float:left; }
+.col-main { float:left; }
+.col-right { float:right; }
+.col-1-layout .col-main { float:none; margin:0; }
+.col-2-right-layout .col-main { float:left; width:770px;  }
+.col-2-left-layout .col-main { float:right; width:770px; }
+.col-3-layout .col-main { width:575px; margin-left:15px; }
+
+/*All---*/
+.col2-set, .col3-set, .col4-set, .col5-set { clear:both; }
+
+/*Col2---*/
+.col2-set .col-1, .col2-set .col-2 { width:100%; }
+.col2-set .col-1 { float:left; }
+.col2-set .col-2 { float:right; }
+
+/*Col2-alt---*/
+.col2-alt-set .col-1 { width:32%; }
+.col2-alt-set .col-2 { width:65%; }
+.col2-alt-set .col-1 { float:left; }
+.col2-alt-set .col-2 { float:right; }
+
+/*Col3---*/
+.col3-set .col-1, .col3-set .col-2, .col3-set .col-3 { float:left; width:31.3%; }
+.col3-set .col-1, .col3-set .col-2 { margin-right:3%; }
+
+/*Col4---*/
+.col4-set .col-1, .col4-set .col-2, .col4-set .col-3, .col4-set .col-4 { float:left; width:22%; }
+.col4-set .col-1, .col4-set .col-2, .col4-set .col-3 { margin-right:4%; }
+
+/*Table Columns---*/
+table .col-1, table .col-2, table .col-3, table .col-4 { float:none !important; margin:0 !important; }
+.col3-set td.spacer { width:3%; }
+.col4-set td.spacer { width:4%; }
